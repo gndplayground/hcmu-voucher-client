@@ -1,7 +1,7 @@
 import { config } from "@configs";
 import { useAuthStore } from "@stores/auth";
 import { useMutation } from "@tanstack/react-query";
-import { User } from "@types";
+import { Role, User, UserProfile } from "@types";
 import { axiosInstance } from "@utils/fetch";
 import { AxiosError } from "axios";
 import React from "react";
@@ -15,16 +15,24 @@ export function useAuthLogin() {
     async (body: { email: string; password: string }) => {
       const { email, password } = body;
       const { data } = await axiosInstance.post<{
-        data: { token: string; user: User };
+        data: { token: string; user: User; profile?: UserProfile };
       }>(`${config.API_ENDPOINT}/auth/login`, {
         email,
         password,
       });
 
+      if (data.data.user.role !== Role.USER) {
+        throw new Error("User must be a user");
+      }
+
       authStore.set((state) => {
         state.user = data.data.user;
       });
       localStorage.setItem("app-user", JSON.stringify(data.data.user));
+      localStorage.setItem(
+        "app-user-profile",
+        JSON.stringify(data.data.profile)
+      );
     },
     {
       onError(error) {
@@ -45,8 +53,34 @@ export function useAuthLogin() {
   );
 }
 
+export function useAuthSignOut() {
+  const authStore = useAuthStore();
+  const { toast } = useToast();
+  return useMutation(
+    async () => {
+      await axiosInstance.post<{
+        data: { token: string; user: User };
+      }>(`${config.API_ENDPOINT}/auth/logout`);
+
+      authStore.set((state) => {
+        state.user = undefined;
+        state.profile = undefined;
+      });
+      localStorage.removeItem("app-user");
+      localStorage.removeItem("app-user-profile");
+    },
+    {
+      onError(error) {
+        toast({
+          error,
+        });
+      },
+    }
+  );
+}
+
 export function useAuthWatcher() {
-  const { user, isValidating } = useAuthStore((state) => {
+  const { isValidating } = useAuthStore((state) => {
     return {
       user: state.user,
       isValidating: state.isValidating,
@@ -55,23 +89,22 @@ export function useAuthWatcher() {
   const setAuthStore = useAuthStore((state) => state.set);
 
   React.useEffect(() => {
-    if (isValidating) return;
-
-    if (user) {
-      router.navigate("/");
-    } else {
-      router.navigate("/login");
-    }
-  }, [isValidating, user]);
-
-  React.useEffect(() => {
     const user = localStorage.getItem("app-user");
     if (user) {
       try {
         const parsedUser = JSON.parse(user);
+        const parsedProfile = JSON.parse(
+          localStorage.getItem("app-user-profile") || ""
+        );
+
+        if (parsedUser.role !== Role.USER) {
+          throw new Error("User must be a user");
+        }
         setAuthStore((state) => {
           state.user = parsedUser;
+          state.profile = parsedProfile;
         });
+        router.navigate("/");
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log("Failed parse user from localStorage");
@@ -80,6 +113,10 @@ export function useAuthWatcher() {
           state.isValidating = false;
         });
       }
+    } else {
+      setAuthStore((state) => {
+        state.isValidating = false;
+      });
     }
   }, [setAuthStore]);
 

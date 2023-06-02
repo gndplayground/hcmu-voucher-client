@@ -26,7 +26,8 @@
       "@types/*": ["src/types/*"],
       "@stores": ["src/stores/index.ts"],
       "@stores/*": ["src/stores/*"],
-      "@assets/*": ["src/assets/*"]
+      "@assets/*": ["src/assets/*"],
+      "@contexts/*": ["src/contexts/*"]
     }
   }
 }

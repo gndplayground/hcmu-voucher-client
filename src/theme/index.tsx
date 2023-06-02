@@ -1,4 +1,13 @@
-import { extendTheme } from "@chakra-ui/react";
+import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
+
+export const buttonTheme = defineStyleConfig({
+  variants: {
+    primary: {
+      bg: "primary",
+      color: "textOnPrimary",
+    },
+  },
+});
 
 const theme = extendTheme({
   fonts: {
@@ -20,12 +29,12 @@ const theme = extendTheme({
     },
   },
   colors: {
-    text: "#575757",
+    text: "#333",
     error: "#b94a48",
-    primary: "#497cb2",
+    primary: "#CB0B2E",
     textOnPrimary: "#fff",
     bg: "#fafafa",
-    border: "#dddfe3",
+    border: "#AFAFAF",
     tagBg: "#ECF4FD",
     tagText: "#497CB2",
   },
@@ -36,10 +45,11 @@ const theme = extendTheme({
         base: "1rem",
       },
       lineHeight: {
-        base: "1.5rem",
+        base: "1.3rem",
       },
     },
   },
+  components: { Button: buttonTheme },
 });
 
 export { theme };

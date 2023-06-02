@@ -1,10 +1,12 @@
 import React, { Suspense } from "react";
 import { RouterProvider } from "react-router-dom";
 import { Box, Spinner } from "@chakra-ui/react";
+import { useAuthWatcher } from "@hooks";
 import AppProvider from "./providers/AppProviders";
 import { router } from "./routes";
 
 function App() {
+  useAuthWatcher();
   return (
     <AppProvider>
       <Suspense

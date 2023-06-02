@@ -1,3 +1,4 @@
+import { BaseLayout } from "@layouts/Base";
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -13,6 +14,12 @@ const LoginLazy = React.lazy(() =>
   }))
 );
 
+const CampaignDetailLazy = React.lazy(() =>
+  import("../pages/CampaignDetail").then((module) => ({
+    default: module.CampaignDetail,
+  }))
+);
+
 export const router = createBrowserRouter([
   {
     path: "/login",
@@ -20,6 +27,16 @@ export const router = createBrowserRouter([
   },
   {
     path: "/",
-    element: <HomeLazy />,
+    element: <BaseLayout />,
+    children: [
+      {
+        path: "/",
+        element: <HomeLazy />,
+      },
+      {
+        path: "/campaigns/:id",
+        element: <CampaignDetailLazy />,
+      },
+    ],
   },
 ]);
