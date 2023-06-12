@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 
 interface AppContextProps {
   setTitle: (title: string) => void;
+  requestLogin: () => void;
 }
 
 export const AppContext = React.createContext<Partial<AppContextProps>>({});

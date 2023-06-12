@@ -1,4 +1,8 @@
-import { VoucherClaimTypeEnum, VoucherDiscount } from "./voucher";
+import {
+  VoucherClaimTypeEnum,
+  VoucherDiscount,
+  VoucherQuestion,
+} from "./voucher";
 
 export interface Campaign {
   id: number;
@@ -15,6 +19,7 @@ export interface Campaign {
   companyId: number;
   company: Company;
   voucherDiscounts: VoucherDiscount[];
+  voucherQuestions?: VoucherQuestion[];
 }
 
 export interface Company {
@@ -26,6 +31,7 @@ export interface Company {
   createdAt: string;
   isDisabled: boolean;
   isDeleted: boolean;
+  website?: string;
 }
 
 export enum CampaignProgressEnum {

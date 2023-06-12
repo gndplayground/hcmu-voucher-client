@@ -1,4 +1,4 @@
-import { Box, Modal, useDisclosure } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import { ModalLogin, SiteHeader } from "@components";
 import React from "react";
 import { Outlet } from "react-router-dom";
@@ -14,7 +14,7 @@ export function BaseLayout() {
   const signout = useAuthSignOut();
 
   const modalDisclo = useDisclosure({
-    defaultIsOpen: true,
+    defaultIsOpen: false,
   });
 
   React.useEffect(() => {
@@ -27,6 +27,9 @@ export function BaseLayout() {
     <AppContext.Provider
       value={{
         setTitle: setHeaderTitle,
+        requestLogin: () => {
+          modalDisclo.onOpen();
+        },
       }}
     >
       <SiteHeader

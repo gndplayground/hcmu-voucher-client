@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Progress, Text } from "@chakra-ui/react";
 import { FiTrendingDown } from "react-icons/fi";
 import { CampaignProgressEnum, VoucherDiscountTypeEnum } from "@types";
 import { Link } from "react-router-dom";
 import { Countdown } from "@components";
 import { useIntersection } from "@hooks/useIntersection";
+import { summarize } from "@utils/text";
 
 export interface CouponItemProps {
   title: string;
@@ -16,6 +17,8 @@ export interface CouponItemProps {
   expiryDate?: string;
   startDate?: string;
   progress: CampaignProgressEnum;
+  total?: number;
+  claimed?: number;
 }
 
 export function CouponItem(props: CouponItemProps) {
@@ -29,6 +32,8 @@ export function CouponItem(props: CouponItemProps) {
     expiryDate,
     progress,
     startDate,
+    total = 0,
+    claimed = 0,
   } = props;
 
   const { isVisible, ref } = useIntersection();
@@ -41,7 +46,7 @@ export function CouponItem(props: CouponItemProps) {
       display="flex"
       borderRadius={10}
       border="1px dashed"
-      borderColor="primary"
+      borderColor="brand.500"
       position="relative"
       w="100%"
     >
@@ -54,7 +59,7 @@ export function CouponItem(props: CouponItemProps) {
       >
         <Box width="80px" height="80px" borderRadius={10} overflow="hidden">
           {image && (
-            <Box w="100%" h="100%" objectFit="cover" as="img" src={image} />
+            <Box w="100%" h="100%" objectFit="contain" as="img" src={image} />
           )}
           {!image && <FiTrendingDown fontSize="80px" />}
         </Box>
@@ -68,7 +73,7 @@ export function CouponItem(props: CouponItemProps) {
                 {brand}{" "}
               </Box>
             </Box>
-            {title && <Text as="p">{title}</Text>}
+            {title && <Text as="p">{summarize(title, 50)}</Text>}
             <Box
               mt={2}
               textAlign="center"
@@ -103,6 +108,19 @@ export function CouponItem(props: CouponItemProps) {
                     />
                   </Box>
                 )}
+              </Box>
+            )}
+            {progress === CampaignProgressEnum.ONGOING && total > 0 && (
+              <Box mt={3}>
+                <Progress
+                  w="100%"
+                  value={Math.floor((claimed / total) * 100)}
+                  size="xs"
+                  colorScheme="brand"
+                />
+                <Box mt={2} fontSize="xs" textAlign="right">
+                  Claimed {claimed} of {total} 🔥
+                </Box>
               </Box>
             )}
           </Box>

@@ -5,7 +5,6 @@ import { Role, User, UserProfile } from "@types";
 import { axiosInstance } from "@utils/fetch";
 import { AxiosError } from "axios";
 import React from "react";
-import { router } from "../routes";
 import { useToast } from "./useToast";
 
 export function useAuthLogin() {
@@ -104,8 +103,11 @@ export function useAuthWatcher() {
           state.user = parsedUser;
           state.profile = parsedProfile;
         });
-        router.navigate("/");
+        // router.navigate("/");
       } catch (error) {
+        // eslint-disable-next-line no-console
+        localStorage.removeItem("app-user");
+        localStorage.removeItem("app-user-profile");
         // eslint-disable-next-line no-console
         console.log("Failed parse user from localStorage");
       } finally {

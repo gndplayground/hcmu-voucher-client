@@ -1,5 +1,5 @@
 import { defineStyleConfig, extendTheme } from "@chakra-ui/react";
-
+import { lighten, darken } from "polished";
 export const buttonTheme = defineStyleConfig({
   variants: {
     primary: {
@@ -8,6 +8,19 @@ export const buttonTheme = defineStyleConfig({
     },
   },
 });
+
+const primaryColor = "#CB0B2E";
+
+const colors = {
+  100: lighten(0.6, primaryColor),
+  200: lighten(0.4, primaryColor),
+  300: lighten(0.2, primaryColor),
+  400: lighten(0.1, primaryColor),
+  500: primaryColor,
+  600: darken(0.1, primaryColor),
+  700: darken(0.2, primaryColor),
+  800: darken(0.4, primaryColor),
+};
 
 const theme = extendTheme({
   fonts: {
@@ -32,6 +45,7 @@ const theme = extendTheme({
     text: "#333",
     error: "#b94a48",
     primary: "#CB0B2E",
+    brand: colors,
     textOnPrimary: "#fff",
     bg: "#fafafa",
     border: "#AFAFAF",

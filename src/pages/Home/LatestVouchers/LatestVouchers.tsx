@@ -3,7 +3,6 @@ import { CouponItem } from "@components";
 import { config } from "@configs";
 import { useGetVouchers } from "@hooks/voucher";
 import { CampaignProgressEnum } from "@types";
-import format from "date-fns/format";
 
 import React from "react";
 import { Link } from "react-router-dom";
@@ -51,6 +50,8 @@ export function LatestVouchers(props: LatestVouchersProps) {
                   }
                   expiryDate={voucher.campaign.endDate}
                   startDate={voucher.campaign.startDate}
+                  claimed={voucher.claimed}
+                  total={voucher.total}
                 />
               </Box>
             </div>

@@ -24,8 +24,8 @@ export const useIntersection = (
   }, []);
 
   const callback: IntersectionObserverCallback = (
-    entries: IntersectionObserverEntry[],
-    observer: IntersectionObserver
+    entries: IntersectionObserverEntry[]
+    // observer: IntersectionObserver
   ) => {
     entries.forEach((entry) => {
       setIsVisible(entry.isIntersecting);
