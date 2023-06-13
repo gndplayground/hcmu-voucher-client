@@ -44,6 +44,7 @@ export const FormInput = React.forwardRef<
       id={id}
       isInvalid={!!errors?.[id] || !!error}
       {...others}
+      ref={ref}
     >
       {label && (
         <FormLabel display="flex" htmlFor={id}>
@@ -51,7 +52,7 @@ export const FormInput = React.forwardRef<
           {isRequired && <Box color="red.500">*</Box>}
         </FormLabel>
       )}
-      {!isMutliline && <Input id={id} {...(inputProps as any)} ref={ref} />}
+      {!isMutliline && <Input id={id} {...(inputProps as any)} />}
       {isMutliline && <Textarea id={id} {...(inputProps as any)} />}
       {(errors?.[id]?.message || !!error) && (
         <FormErrorMessage>

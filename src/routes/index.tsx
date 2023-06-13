@@ -1,5 +1,6 @@
+import { GuardRoute, SectionLoading } from "@components";
 import { BaseLayout } from "@layouts/Base";
-import React from "react";
+import React, { Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 
 const HomeLazy = React.lazy(() =>
@@ -20,6 +21,22 @@ const CampaignDetailLazy = React.lazy(() =>
   }))
 );
 
+const MyVouchersLazy = React.lazy(() =>
+  import("../pages/MyVouchers").then((module) => ({
+    default: module.MyVouchers,
+  }))
+);
+
+const BrandsLazy = React.lazy(() =>
+  import("../pages/Brands").then((module) => ({
+    default: module.Brands,
+  }))
+);
+
+function SupportSuspense(props: { children: React.ReactNode }) {
+  return <Suspense fallback={<SectionLoading />}>{props.children}</Suspense>;
+}
+
 export const router = createBrowserRouter([
   {
     path: "/login",
@@ -35,7 +52,27 @@ export const router = createBrowserRouter([
       },
       {
         path: "/campaigns/:id",
-        element: <CampaignDetailLazy />,
+        element: (
+          <SupportSuspense>
+            <CampaignDetailLazy />
+          </SupportSuspense>
+        ),
+      },
+      {
+        path: "/my-vouchers",
+        element: (
+          <SupportSuspense>
+            <GuardRoute>{() => <MyVouchersLazy />}</GuardRoute>
+          </SupportSuspense>
+        ),
+      },
+      {
+        path: "/brands",
+        element: (
+          <SupportSuspense>
+            <BrandsLazy />
+          </SupportSuspense>
+        ),
       },
     ],
   },

@@ -231,7 +231,6 @@ export function FormQuestions(props: FormQuestionProps) {
                   <Box mt={2}>
                     <FormInput
                       isMutliline={true}
-                      {...register(`questions.${index}.answer` as const)}
                       isRequired={true}
                       disabled={isSubmitting}
                       id={`questions.${index}.answer`}

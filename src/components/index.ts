@@ -5,3 +5,5 @@ export * from "./CouponItem";
 export * from "./Countdown";
 export * from "./ModalLogin";
 export * from "./ClickToCopy";
+export * from "./SectionLoading";
+export * from "./GuardRoute";

@@ -18,6 +18,8 @@ export function LatestVouchers(props: LatestVouchersProps) {
     filterByProgress: progress,
   });
 
+  if (!data?.data || data.data.data.length === 0) return null;
+
   return (
     <Box as="section">
       <Box display="flex" alignItems="center">

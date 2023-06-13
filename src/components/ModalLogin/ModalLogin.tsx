@@ -14,22 +14,24 @@ import { FiXCircle } from "react-icons/fi";
 import { FormInput } from "@components";
 import { useForm } from "react-hook-form";
 import { useAuthLogin } from "@hooks";
-import { IsEmail, IsNotEmpty } from "class-validator";
-import { getClassValidatorResolver } from "@utils/form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 export interface ModalLoginProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-class LoginDto {
-  @IsEmail()
+export interface FormLoginValues {
   email: string;
-
-  @IsNotEmpty()
   password: string;
 }
 
-const resolver = getClassValidatorResolver(LoginDto);
+const validationSchema = Yup.object<FormLoginValues>().shape({
+  email: Yup.string().required("Email required").email("Invalid email"),
+  password: Yup.string().required("Password required").min(6),
+});
+
+const resolver = yupResolver(validationSchema);
 
 export function ModalLogin(props: ModalLoginProps) {
   const { isOpen, onClose } = props;
@@ -39,11 +41,11 @@ export function ModalLogin(props: ModalLoginProps) {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<FormLoginValues>({
     resolver,
   });
 
-  function onSubmit(values: Record<string, any>) {
+  function onSubmit(values: FormLoginValues) {
     authLogin.mutate({
       email: values.email,
       password: values.password,

@@ -70,7 +70,7 @@ export function CouponItem(props: CouponItemProps) {
           <Box mr={2} w="100%">
             <Box display="flex">
               <Box color="primary" fontWeight={700} fontSize="1.2rem">
-                {brand}{" "}
+                {brand}
               </Box>
             </Box>
             {title && <Text as="p">{summarize(title, 50)}</Text>}

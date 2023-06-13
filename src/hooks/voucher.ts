@@ -1,6 +1,6 @@
 import { config } from "@configs";
 import { useAuthStore } from "@stores/auth";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQuery } from "@tanstack/react-query";
 import {
   APIResponse,
   CampaignProgressEnum,
@@ -84,4 +84,23 @@ export function useClaimVoucher() {
       },
     }
   );
+}
+
+export function useGetMyVouchers() {
+  const user = useAuthStore((state) => state.user);
+  return useInfiniteQuery({
+    queryKey: ["my-vouchers", user?.id],
+    queryFn: async ({ pageParam = 1 }) => {
+      const result = await axiosInstance.get<APIResponse<VoucherTicket[]>>(
+        `${config.API_ENDPOINT}/user-claim?page=${pageParam}`
+      );
+      return result.data;
+    },
+    getNextPageParam: (lastPage, x) => {
+      if (lastPage.meta?.hasNextPage) {
+        return x.length + 1;
+      }
+    },
+    enabled: !!user?.id,
+  });
 }

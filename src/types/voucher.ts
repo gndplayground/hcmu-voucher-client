@@ -79,4 +79,5 @@ export interface VoucherTicket {
   claimBy: number;
   claimAt: string;
   ownedBy?: number;
+  voucherDiscount: VoucherDiscountWithCampaign;
 }
