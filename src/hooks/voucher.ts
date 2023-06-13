@@ -21,7 +21,7 @@ export function useGetVouchers(options: {
   const { search, filterByProgress, page } = options;
   const { toast } = useToast();
   return useQuery(
-    ["campaigns", search, filterByProgress, page],
+    ["vouchers", search, filterByProgress, page],
     async () => {
       const query = queryString.stringify({
         search,
@@ -102,5 +102,41 @@ export function useGetMyVouchers() {
       }
     },
     enabled: !!user?.id,
+  });
+}
+
+export function useGetVouchersInfinite(options: {
+  search?: string;
+  filterByProgress?: CampaignProgressEnum;
+  companyId?: number;
+  enabled?: boolean;
+}) {
+  const { search, filterByProgress, companyId, enabled = true } = options;
+  const { toast } = useToast();
+  return useInfiniteQuery({
+    queryKey: ["vouchers-inf", search, filterByProgress, companyId],
+    queryFn: async ({ pageParam = 1 }) => {
+      const query = queryString.stringify({
+        search,
+        filterByProgress,
+        page: pageParam,
+        companyId,
+      });
+      const result = await axiosInstance.get<
+        APIResponse<VoucherDiscountWithCampaign[]>
+      >(`${config.API_ENDPOINT}/vouchers?${query}`);
+      return result.data;
+    },
+    onError(error) {
+      toast({
+        error,
+      });
+    },
+    getNextPageParam: (lastPage, x) => {
+      if (lastPage.meta?.hasNextPage) {
+        return x.length + 1;
+      }
+    },
+    enabled,
   });
 }

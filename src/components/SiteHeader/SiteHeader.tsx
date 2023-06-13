@@ -71,8 +71,8 @@ export function SiteHeader(props: SiteHeaderProps) {
                 </MenuButton>
                 <MenuList>
                   <MenuItem>Profile</MenuItem>
-                  <MenuItem>
-                    <Link to="/my-vouchers">My vouchers</Link>
+                  <MenuItem as={Link} to="/my-vouchers">
+                    My vouchers
                   </MenuItem>
                   <MenuDivider />
                   <MenuItem onClick={onRequestLogout}>Logout</MenuItem>

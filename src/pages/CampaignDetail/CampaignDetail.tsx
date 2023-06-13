@@ -47,7 +47,7 @@ export function CampaignDetail() {
       const endDate = new Date(campaign.endDate);
       const now = new Date();
       if (now > endDate) {
-        return CampaignProgressEnum.ENDED;
+        return CampaignProgressEnum.FINISHED;
       } else if (now < startDate) {
         return CampaignProgressEnum.UPCOMING;
       } else {
@@ -78,6 +78,7 @@ export function CampaignDetail() {
             fontSize="1.8rem"
             lineHeight="130%"
             textAlign="center"
+            color="brand.500"
           >
             {campaign.name}
           </Box>
@@ -94,7 +95,7 @@ export function CampaignDetail() {
               }
             />
           </Box>
-          {progress === CampaignProgressEnum.ENDED && (
+          {progress === CampaignProgressEnum.FINISHED && (
             <Box>
               <Box mt={16}>
                 <Box display="flex" justifyContent="center">
@@ -125,7 +126,7 @@ export function CampaignDetail() {
               <Box mt={10}>{campaign.description}</Box>
             </Box>
           )}
-          {progress !== CampaignProgressEnum.ENDED && (
+          {progress !== CampaignProgressEnum.FINISHED && (
             <Box pos="relative">
               {!!selectedVoucher && (
                 <ModalSelectVoucher
@@ -236,18 +237,22 @@ export function CampaignDetail() {
                         </Box>
                         {campaign.company.address && (
                           <Box mt={2} display="flex" as="p">
-                            <Box fontSize="1.5rem">
+                            <Box as="span" fontSize="1.5rem">
                               <FiMapPin />
                             </Box>
-                            <Box ml={2}>{campaign.company.address}</Box>
+                            <Box as="span" ml={2}>
+                              {campaign.company.address}
+                            </Box>
                           </Box>
                         )}
                         {campaign.company.phone && (
                           <Box mt={2} display="flex" as="p">
-                            <Box fontSize="1.5rem">
+                            <Box as="span" fontSize="1.5rem">
                               <FiPhone />
                             </Box>
-                            <Box ml={2}>{campaign.company.phone}</Box>
+                            <Box as="span" ml={2}>
+                              {campaign.company.phone}
+                            </Box>
                           </Box>
                         )}
                         <Box display="flex" mt={4} justifyContent="center">

@@ -1,14 +1,40 @@
-import { Box, Center, Wrap, WrapItem } from "@chakra-ui/react";
-import { config } from "@configs";
+import {
+  Box,
+  Button,
+  Center,
+  Checkbox,
+  Input,
+  Wrap,
+  WrapItem,
+} from "@chakra-ui/react";
+import { Brand } from "@components";
+import { useAppContext } from "@contexts/AppContext";
 import { useGetCompanies } from "@hooks/company";
 import React from "react";
-import { FiTrendingDown } from "react-icons/fi";
-import { Link } from "react-router-dom";
+import debounce from "lodash.debounce";
 
 export function Brands() {
+  const [search, setSearch] = React.useState("");
+  const [isHaveActiveCampaigns, setIsHaveActiveCampaigns] =
+    React.useState<boolean>(false);
+
   const companies = useGetCompanies({
-    // isHaveActiveCampaigns: true,
+    isHaveActiveCampaigns,
+    search,
   });
+
+  const app = useAppContext();
+
+  React.useEffect(() => {
+    app?.setTitle?.("Brands");
+    return () => {
+      app?.setTitle?.("");
+    };
+  }, [app]);
+
+  const handleOnChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  }, 500);
 
   return (
     <Box>
@@ -18,43 +44,51 @@ export function Brands() {
         fontSize="1.8rem"
         lineHeight="130%"
         textAlign="center"
+        color="brand.500"
       >
         Amazing Brands
       </Box>
-      <Wrap spacing={4}>
+      <Box mt={2}>
+        <Box width="100%" display="flex">
+          <Input placeholder="Search brand" onChange={handleOnChange} />
+        </Box>
+        <Box mt={2}>
+          <Checkbox
+            colorScheme="brand"
+            isChecked={isHaveActiveCampaigns}
+            onChange={(e) => {
+              setIsHaveActiveCampaigns(e.target.checked);
+            }}
+          >
+            Only brand have active vouchers
+          </Checkbox>
+        </Box>
+      </Box>
+      <Wrap mt={4} spacing={4} justify="center">
         {companies.data?.pages.map((page) => {
           return page.data.map((company) => {
             return (
-              <WrapItem w="50%" key={company.id}>
+              <WrapItem w="calc(50% - 32px)" key={company.id}>
                 <Center flexDir="column" w="100%">
-                  <Link to={`/brands/${company.id}`}>
-                    <Box
-                      width="80px"
-                      height="80px"
-                      borderRadius={10}
-                      overflow="hidden"
-                    >
-                      {company.logo && (
-                        <Box
-                          w="100%"
-                          h="100%"
-                          objectFit="contain"
-                          as="img"
-                          src={`${config.APP_IMAGE_END_POINT}/companies/${company.logo}`}
-                        />
-                      )}
-                      {!company.logo && <FiTrendingDown fontSize="80px" />}
-                    </Box>
-                    <Box mt={1} textAlign="center" fontWeight={700}>
-                      {company.name}
-                    </Box>
-                  </Link>
+                  <Brand company={company} />
                 </Center>
               </WrapItem>
             );
           });
         })}
       </Wrap>
+      {companies.hasNextPage && (
+        <Box textAlign="center" mt={4}>
+          <Button
+            colorScheme="brand"
+            onClick={() => {
+              companies.fetchNextPage();
+            }}
+          >
+            Load more
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }

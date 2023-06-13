@@ -1,44 +1,37 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { CouponItem } from "@components";
 import { config } from "@configs";
-import { useGetVouchers } from "@hooks/voucher";
+import { useGetVouchersInfinite } from "@hooks/voucher";
 import { CampaignProgressEnum } from "@types";
-
 import React from "react";
-import { Link } from "react-router-dom";
 
-export interface LatestVouchersProps {
-  progress?: CampaignProgressEnum;
+export interface VouchersListProps {
+  companyId?: number;
 }
 
-export function LatestVouchers(props: LatestVouchersProps) {
-  const { progress = CampaignProgressEnum.ONGOING } = props;
+export function VouchersList(props: VouchersListProps) {
+  const { companyId } = props;
 
-  const { data } = useGetVouchers({
-    filterByProgress: progress,
+  const vouchers = useGetVouchersInfinite({
+    companyId,
+    enabled: !!companyId,
+    filterByProgress: CampaignProgressEnum.ONGOING,
   });
 
-  if (!data?.data || data.data.data.length === 0) return null;
-
   return (
-    <Box as="section">
-      <Box display="flex" alignItems="center">
-        <Box as="h2" fontWeight={700} fontSize="1.4rem" m={0}>
-          {progress === CampaignProgressEnum.ONGOING && "🔥 Ongoing vouchers"}
-          {progress === CampaignProgressEnum.UPCOMING &&
-            "🔥 Upcomming vouchers"}
+    <Box>
+      {vouchers.data?.pages?.[0].data.length === 0 && (
+        <Box textAlign="center">
+          Please check back later as new vouchers may become available
         </Box>
-        <Box as={Link} ml="auto" to={`/vouchers?progress=${progress}`}>
-          View all
-        </Box>
-      </Box>
-      <Box mt={2}>
-        {data?.data.data.map((voucher) => {
+      )}
+      {vouchers.data?.pages.map((page) => {
+        return page.data.map((voucher) => {
           return (
             <div key={voucher.id}>
               <Box mt="16px">
                 <CouponItem
-                  progress={progress}
+                  progress={CampaignProgressEnum.ONGOING}
                   url={`/campaigns/${voucher.campaignId}?selected=${voucher.id}`}
                   brand={voucher.campaign.company.name}
                   key={voucher.id}
@@ -58,7 +51,18 @@ export function LatestVouchers(props: LatestVouchersProps) {
               </Box>
             </div>
           );
-        })}
+        });
+      })}
+
+      <Box mt={2} textAlign="center">
+        {vouchers.hasNextPage && (
+          <Button
+            onClick={() => vouchers.fetchNextPage()}
+            isLoading={vouchers.isFetchingNextPage}
+          >
+            {vouchers.isFetchingNextPage ? "Loading more..." : "Load more"}
+          </Button>
+        )}
       </Box>
     </Box>
   );

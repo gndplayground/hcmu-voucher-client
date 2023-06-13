@@ -38,5 +38,4 @@ export enum CampaignProgressEnum {
   UPCOMING = "upcoming",
   ONGOING = "ongoing",
   FINISHED = "finished",
-  ENDED = "ENDED",
 }

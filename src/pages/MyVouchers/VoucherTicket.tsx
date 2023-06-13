@@ -23,93 +23,94 @@ export function VoucherTicketItem(props: VoucherTicketItemProps) {
       borderColor="brand.500"
       position="relative"
       w="100%"
-      p={2}
-      display="flex"
+      px={4}
+      py={2}
     >
-      <Box
-        m={2}
-        color="primary"
-        borderRight="1px dashed"
-        borderColor="primary"
-        pr={2}
-      >
-        <Box width="80px" height="80px" borderRadius={10} overflow="hidden">
-          {company.logo && (
-            <Box
-              w="100%"
-              h="100%"
-              objectFit="contain"
-              as="img"
-              src={`${config.APP_IMAGE_END_POINT}/companies/${company.logo}`}
-            />
-          )}
-          {!company.logo && <FiTrendingDown fontSize="80px" />}
+      <Box display="flex" alignItems="center">
+        <Box
+          m={2}
+          color="primary"
+          borderRight="1px dashed"
+          borderColor="primary"
+          pr={2}
+        >
+          <Box width="80px" height="80px" borderRadius={10} overflow="hidden">
+            {company.logo && (
+              <Box
+                w="100%"
+                h="100%"
+                objectFit="contain"
+                as="img"
+                src={`${config.APP_IMAGE_END_POINT}/companies/${company.logo}`}
+              />
+            )}
+            {!company.logo && <FiTrendingDown fontSize="80px" />}
+          </Box>
+        </Box>
+        <Box pl={2}>
+          <Box fontWeight={700} fontSize="1.2rem" color="brand.500">
+            {company.name}
+          </Box>
+          <Box fontWeight={700}>{voucher.voucherDiscount.campaign.name}</Box>
         </Box>
       </Box>
-      <Box pl={2}>
-        <Box fontWeight={700} fontSize="1.2rem" color="brand.500">
-          {company.name}
-        </Box>
-        <Box fontWeight={700}>{voucher.voucherDiscount.campaign.name}</Box>
-        <Box>
-          Claim at: {format(new Date(voucher.claimAt), "dd/MM/yyyy hh:mm")}
-        </Box>
-        <Box>
-          End at:{" "}
-          {format(
-            new Date(voucher.voucherDiscount.campaign.endDate),
-            "dd/MM/yyyy hh:mm"
-          )}
-        </Box>
-        <Box
-          mt={2}
-          textAlign="center"
-          fontWeight={700}
-          bg="primary"
-          color="textOnPrimary"
-          borderRadius={10}
-        >
-          <Box
-            as="strong"
-            justifyContent="center"
-            fontWeight={700}
-            fontSize="1.2rem"
-          >
-            - {voucher.voucherDiscount.discount}
-            {voucher.voucherDiscount.type === VoucherDiscountTypeEnum.PERCENTAGE
-              ? "%"
-              : "$"}
-          </Box>
-        </Box>
-        <Divider my={2} />
-        {isCodeVisible ? (
-          <Box
-            mt={2}
-            fontSize="1.25rem"
-            fontWeight={700}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="brand.500"
-          >
-            {code}
-            <Box ml={2}>
-              <ClickToCopy text={code || ""} />
-            </Box>
-          </Box>
-        ) : (
-          <Button
-            mt={2}
-            colorScheme="brand"
-            variant="outline"
-            onClick={() => {
-              setIsCodeVisible(true);
-            }}
-          >
-            Click to reveal voucher code
-          </Button>
+      <Box>
+        Claim at: {format(new Date(voucher.claimAt), "dd/MM/yyyy hh:mm")}
+      </Box>
+      <Box>
+        End at:{" "}
+        {format(
+          new Date(voucher.voucherDiscount.campaign.endDate),
+          "dd/MM/yyyy hh:mm"
         )}
       </Box>
+      <Box
+        mt={2}
+        textAlign="center"
+        fontWeight={700}
+        bg="primary"
+        color="textOnPrimary"
+        borderRadius={10}
+      >
+        <Box
+          as="strong"
+          justifyContent="center"
+          fontWeight={700}
+          fontSize="1.2rem"
+        >
+          - {voucher.voucherDiscount.discount}
+          {voucher.voucherDiscount.type === VoucherDiscountTypeEnum.PERCENTAGE
+            ? "%"
+            : "$"}
+        </Box>
+      </Box>
+      <Divider my={4} />
+      {isCodeVisible ? (
+        <Box
+          mt={2}
+          fontSize="1.25rem"
+          fontWeight={700}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          color="brand.500"
+        >
+          {code}
+          <Box ml={2}>
+            <ClickToCopy text={code || ""} />
+          </Box>
+        </Box>
+      ) : (
+        <Box textAlign="center">
+          <Button
+            variant="outline"
+            colorScheme="brand"
+            onClick={() => setIsCodeVisible(true)}
+          >
+            Click to show code
+          </Button>
+        </Box>
+      )}
     </Box>
   );
 }
