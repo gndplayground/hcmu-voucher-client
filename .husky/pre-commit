@@ -1,4 +1,7 @@
 #!/bin/sh
+./scripts/hash
+git add src/version.ts
+
 . "$(dirname "$0")/_/husky.sh"
 
 npx lint-staged
