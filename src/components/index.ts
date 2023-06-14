@@ -8,3 +8,4 @@ export * from "./ClickToCopy";
 export * from "./SectionLoading";
 export * from "./GuardRoute";
 export * from "./Brand";
+export * from "./HasNextPagination";

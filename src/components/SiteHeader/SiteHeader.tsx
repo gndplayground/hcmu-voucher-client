@@ -9,7 +9,7 @@ import {
 import { MainLogo } from "@components/Logo";
 import React from "react";
 import { Link } from "react-router-dom";
-import { FiUser } from "react-icons/fi";
+import { FiUser, FiUserCheck } from "react-icons/fi";
 import { User } from "@types";
 
 export interface SiteHeaderProps {
@@ -66,7 +66,8 @@ export function SiteHeader(props: SiteHeaderProps) {
                     borderColor="primary"
                     p={2}
                   >
-                    <FiUser />
+                    {!user && <FiUser />}
+                    {user && <FiUserCheck />}
                   </Box>
                 </MenuButton>
                 <MenuList>

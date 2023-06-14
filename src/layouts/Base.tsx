@@ -23,6 +23,14 @@ export function BaseLayout() {
     }
   }, [user, modalDisclo]);
 
+  React.useEffect(() => {
+    if (headerTitle) {
+      document.title = `${headerTitle} - Samoyed Vouchers`;
+      return;
+    }
+    document.title = "Samoyed Vouchers";
+  }, [headerTitle]);
+
   return (
     <AppContext.Provider
       value={{

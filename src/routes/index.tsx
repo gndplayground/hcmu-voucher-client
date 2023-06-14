@@ -39,6 +39,12 @@ const BrandDetailLazy = React.lazy(() =>
   }))
 );
 
+const VouchersLazy = React.lazy(() =>
+  import("../pages/Vouchers").then((module) => ({
+    default: module.Vouchers,
+  }))
+);
+
 function SupportSuspense(props: { children: React.ReactNode }) {
   return <Suspense fallback={<SectionLoading />}>{props.children}</Suspense>;
 }
@@ -85,6 +91,14 @@ export const router = createBrowserRouter([
         element: (
           <SupportSuspense>
             <BrandDetailLazy />
+          </SupportSuspense>
+        ),
+      },
+      {
+        path: "/vouchers",
+        element: (
+          <SupportSuspense>
+            <VouchersLazy />
           </SupportSuspense>
         ),
       },

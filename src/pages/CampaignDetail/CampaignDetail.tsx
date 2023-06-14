@@ -259,7 +259,6 @@ export function CampaignDetail() {
                           <Button
                             as={Link}
                             to={`/brands/${campaign.company.id}`}
-                            target="__blank"
                             colorScheme="brand"
                             variant="outline"
                           >
