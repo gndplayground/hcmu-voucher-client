@@ -69,10 +69,21 @@ export function useAuthSignOut() {
       localStorage.removeItem("app-user-profile");
     },
     {
-      onError(error) {
+      onSuccess() {
         toast({
-          error,
+          status: "success",
+          description: "Sign out successfully",
         });
+      },
+      onError(error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+        authStore.set((state) => {
+          state.user = undefined;
+          state.profile = undefined;
+        });
+        localStorage.removeItem("app-user");
+        localStorage.removeItem("app-user-profile");
       },
     }
   );
@@ -125,4 +136,66 @@ export function useAuthWatcher() {
   return {
     isValidating,
   };
+}
+
+export function useAuthChangePassword() {
+  const { toast } = useToast();
+  const signout = useAuthSignOut();
+
+  return useMutation(
+    async (body: { oldPassword: string; newPassword: string }) => {
+      const { oldPassword, newPassword } = body;
+      await axiosInstance.post<{
+        data: { token: string; user: User; profile?: UserProfile };
+      }>(`${config.API_ENDPOINT}/auth/change-password`, {
+        oldPassword,
+        newPassword,
+      });
+    },
+    {
+      onSuccess() {
+        toast({
+          title: "Success",
+          description: "Password has been changed",
+          status: "success",
+        });
+        signout.mutate();
+      },
+      onError(error) {
+        toast({
+          error,
+        });
+      },
+    }
+  );
+}
+
+export function useRegister() {
+  const { toast } = useToast();
+
+  return useMutation(
+    async (body: { email: string; password: string }) => {
+      const { email, password } = body;
+      await axiosInstance.post<{
+        data: { token: string; user: User; profile?: UserProfile };
+      }>(`${config.API_ENDPOINT}/auth/register`, {
+        email,
+        password,
+      });
+    },
+    {
+      onSuccess() {
+        toast({
+          title: "Success",
+          description: "Register success, please login",
+          status: "success",
+        });
+      },
+      onError(error) {
+        toast({
+          error,
+        });
+      },
+    }
+  );
 }

@@ -8,26 +8,24 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
-import { IsEmail, IsNotEmpty } from "class-validator";
-import { getClassValidatorResolver } from "@utils/form";
 import { FormInput } from "@components";
-import { useAuthLogin } from "@hooks";
+import { useRegister } from "@hooks";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "@stores/auth";
 import React from "react";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FiArrowLeft } from "react-icons/fi";
 
-class LoginDto {
-  @IsEmail()
-  email: string;
+const schema = yup.object().shape({
+  email: yup.string().email().required(),
+  password: yup.string().min(6).required(),
+});
 
-  @IsNotEmpty()
-  password: string;
-}
+const resolver = yupResolver(schema);
 
-const resolver = getClassValidatorResolver(LoginDto);
-
-export function Login() {
-  const authLogin = useAuthLogin();
+export function Register() {
+  const authRegister = useRegister();
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
 
@@ -43,11 +41,16 @@ export function Login() {
     resolver,
   });
 
-  function onSubmit(values: Record<string, any>) {
-    authLogin.mutate({
-      email: values.email,
-      password: values.password,
-    });
+  async function onSubmit(values: Record<string, any>) {
+    try {
+      authRegister.mutate({
+        email: values.email,
+        password: values.password,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
   }
 
   return (
@@ -59,7 +62,7 @@ export function Login() {
     >
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Sign in to your account</Heading>
+          <Heading fontSize={"4xl"}>Register</Heading>
         </Stack>
         <Box
           rounded={"lg"}
@@ -67,7 +70,10 @@ export function Login() {
           boxShadow={"lg"}
           p={8}
         >
-          <Stack as="form" spacing={4} onSubmit={handleSubmit(onSubmit)}>
+          <Button variant="link" as={Link} to="/" leftIcon={<FiArrowLeft />}>
+            Back home
+          </Button>
+          <Stack mt={4} as="form" spacing={4} onSubmit={handleSubmit(onSubmit)}>
             <FormInput
               disabled={isSubmitting}
               id="email"
@@ -97,11 +103,6 @@ export function Login() {
                 Sign in
               </Button>
             </Stack>
-            <Box textAlign="center" mt={2}>
-              <Button variant="link" as={Link} to="/register">
-                Register
-              </Button>
-            </Box>
           </Stack>
         </Box>
       </Stack>

@@ -45,6 +45,18 @@ const VouchersLazy = React.lazy(() =>
   }))
 );
 
+const ProfileLazy = React.lazy(() =>
+  import("../pages/Profile").then((module) => ({
+    default: module.Profile,
+  }))
+);
+
+const RegisterLazy = React.lazy(() =>
+  import("../pages/Register").then((module) => ({
+    default: module.Register,
+  }))
+);
+
 function SupportSuspense(props: { children: React.ReactNode }) {
   return <Suspense fallback={<SectionLoading />}>{props.children}</Suspense>;
 }
@@ -53,6 +65,10 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginLazy />,
+  },
+  {
+    path: "/register",
+    element: <RegisterLazy />,
   },
   {
     path: "/",
@@ -99,6 +115,14 @@ export const router = createBrowserRouter([
         element: (
           <SupportSuspense>
             <VouchersLazy />
+          </SupportSuspense>
+        ),
+      },
+      {
+        path: "/my-profile",
+        element: (
+          <SupportSuspense>
+            <GuardRoute>{() => <ProfileLazy />}</GuardRoute>
           </SupportSuspense>
         ),
       },

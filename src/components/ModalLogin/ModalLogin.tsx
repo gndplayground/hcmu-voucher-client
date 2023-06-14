@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { useAuthLogin } from "@hooks";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { Link } from "react-router-dom";
 export interface ModalLoginProps {
   isOpen: boolean;
   onClose: () => void;
@@ -102,6 +103,16 @@ export function ModalLogin(props: ModalLoginProps) {
                   Sign in
                 </Button>
               </Stack>
+              <Box textAlign="center" mt={2}>
+                <Button
+                  variant="link"
+                  onClick={onClose}
+                  as={Link}
+                  to="/register"
+                >
+                  Register
+                </Button>
+              </Box>
             </Stack>
           </Box>
         </Stack>

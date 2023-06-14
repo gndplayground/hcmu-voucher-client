@@ -71,7 +71,9 @@ export function SiteHeader(props: SiteHeaderProps) {
                   </Box>
                 </MenuButton>
                 <MenuList>
-                  <MenuItem>Profile</MenuItem>
+                  <MenuItem as={Link} to="/my-profile">
+                    Profile
+                  </MenuItem>
                   <MenuItem as={Link} to="/my-vouchers">
                     My vouchers
                   </MenuItem>
