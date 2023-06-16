@@ -55,7 +55,7 @@ export interface VoucherDiscount {
   claimed: number;
   createdAt: string;
   isDeleted: boolean;
-  questions?: VoucherQuestion[];
+  voucherQuestions?: VoucherQuestion[];
 }
 
 export interface VoucherDiscountWithCampaign extends VoucherDiscount {

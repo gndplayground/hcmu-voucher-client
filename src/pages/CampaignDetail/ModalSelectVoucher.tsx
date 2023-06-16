@@ -83,10 +83,10 @@ export const ModalSelectVoucher: React.FC<ModalProps> = ({
   const questions = React.useMemo(() => {
     if (campaign && selectedVoucher) {
       if (claimType === VoucherClaimTypeEnum.QUESTIONS) {
-        if (campaign.voucherQuestions) {
+        if (campaign.voucherQuestions && campaign.claimType) {
           return campaign.voucherQuestions;
         }
-        return selectedVoucher.questions;
+        return selectedVoucher.voucherQuestions;
       }
     }
   }, [campaign, claimType, selectedVoucher]);
