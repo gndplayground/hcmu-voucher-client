@@ -60,7 +60,11 @@ export function useCheckCanClaim(options: { voucherId?: number }) {
   );
 }
 
-export function useClaimVoucher() {
+export function useClaimVoucher(
+  options: {
+    onSuccess?: () => void;
+  } = {}
+) {
   const { toast } = useToast();
   return useMutation(
     async (data: VoucherClaim) => {
@@ -76,6 +80,7 @@ export function useClaimVoucher() {
           status: "success",
           title: "Claim voucher successfully",
         });
+        options.onSuccess?.();
       },
       onError(error) {
         toast({

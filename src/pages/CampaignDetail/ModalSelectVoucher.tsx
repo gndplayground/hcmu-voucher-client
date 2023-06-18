@@ -51,7 +51,11 @@ export const ModalSelectVoucher: React.FC<ModalProps> = ({
 
   const user = useAuthStore((state) => state.user);
 
-  const claimVoucher = useClaimVoucher();
+  const claimVoucher = useClaimVoucher({
+    onSuccess: () => {
+      refetch?.();
+    },
+  });
 
   const claimType = React.useMemo(() => {
     if (!campaign || !selectedVoucher) return;

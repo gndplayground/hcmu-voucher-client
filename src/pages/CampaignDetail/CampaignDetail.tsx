@@ -138,6 +138,7 @@ export function CampaignDetail() {
                   onClose={() => {
                     navigate(`/campaigns/${campaign.id}`);
                   }}
+                  refetch={camp.refetch}
                 />
               )}
 
