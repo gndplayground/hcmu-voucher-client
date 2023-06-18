@@ -1,6 +1,8 @@
-import { Box, Button, VStack } from "@chakra-ui/react";
+import { Box, Button, IconButton, VStack } from "@chakra-ui/react";
 import { useGetMyVouchers } from "@hooks/voucher";
 import React from "react";
+import { Link } from "react-router-dom";
+import { FiArrowLeft } from "react-icons/fi";
 import { VoucherTicketItem } from "./VoucherTicket";
 
 export function MyVouchers() {
@@ -8,6 +10,9 @@ export function MyVouchers() {
 
   return (
     <Box>
+      <IconButton as={Link} to="/" aria-label="Back" variant="outline">
+        <FiArrowLeft />
+      </IconButton>
       <Box
         as="h1"
         fontWeight={700}

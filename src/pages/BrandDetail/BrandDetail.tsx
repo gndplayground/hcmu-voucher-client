@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  IconButton,
   Tab,
   TabList,
   TabPanel,
@@ -13,8 +14,8 @@ import { useAppContext } from "@contexts/AppContext";
 import { useGetCompany } from "@hooks/company";
 import { StoreLocation } from "@pages/CampaignDetail/StoreLocation";
 import React from "react";
-import { FiExternalLink, FiMapPin, FiPhone } from "react-icons/fi";
-import { useParams } from "react-router-dom";
+import { FiArrowLeft, FiExternalLink, FiMapPin, FiPhone } from "react-icons/fi";
+import { Link, useParams } from "react-router-dom";
 import { VouchersList } from "./VouchersList";
 
 export function BrandDetail() {
@@ -41,6 +42,9 @@ export function BrandDetail() {
 
   return (
     <Box>
+      <IconButton as={Link} to="/brands" aria-label="Back" variant="outline">
+        <FiArrowLeft />
+      </IconButton>
       <Box mt={4}>
         {company.logo && (
           <Box display="flex" justifyContent="center">

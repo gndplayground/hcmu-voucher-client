@@ -1,4 +1,11 @@
-import { Box, Button, Divider, Spinner, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Spinner,
+  VStack,
+} from "@chakra-ui/react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { config } from "@configs";
 import { useGetCampaign } from "@hooks/campaign";
@@ -9,7 +16,7 @@ import { Countdown, CouponItem, LogoNotFoundItem } from "@components";
 import { useAppContext } from "@contexts/AppContext";
 import queryString from "query-string";
 import { useIntersection } from "@hooks/useIntersection";
-import { FiExternalLink, FiMapPin, FiPhone } from "react-icons/fi";
+import { FiArrowLeft, FiExternalLink, FiMapPin, FiPhone } from "react-icons/fi";
 import { ModalSelectVoucher } from "./ModalSelectVoucher";
 import { StoreLocation } from "./StoreLocation";
 
@@ -58,6 +65,9 @@ export function CampaignDetail() {
 
   return (
     <Box>
+      <IconButton as={Link} to="/vouchers" aria-label="Back" variant="outline">
+        <FiArrowLeft />
+      </IconButton>
       {!campaign && (
         <Box
           minH="150px"

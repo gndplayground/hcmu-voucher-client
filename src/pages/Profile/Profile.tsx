@@ -1,10 +1,12 @@
-import { Box, Button, Stack } from "@chakra-ui/react";
+import { Box, Button, IconButton, Stack } from "@chakra-ui/react";
 import { FormInput } from "@components";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAuthChangePassword } from "@hooks";
 import React from "react";
 
 import { useForm } from "react-hook-form";
+import { FiArrowLeft } from "react-icons/fi";
+import { Link } from "react-router-dom";
 import * as yup from "yup";
 
 type ChangePasswordFormData = {
@@ -52,6 +54,9 @@ export function Profile() {
 
   return (
     <Box>
+      <IconButton as={Link} to="/" aria-label="Back" variant="outline">
+        <FiArrowLeft />
+      </IconButton>
       <Box
         as="h1"
         fontWeight={700}

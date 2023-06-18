@@ -3,6 +3,7 @@ import {
   Button,
   Center,
   Checkbox,
+  IconButton,
   Input,
   Wrap,
   WrapItem,
@@ -12,6 +13,8 @@ import { useAppContext } from "@contexts/AppContext";
 import { useGetCompanies } from "@hooks/company";
 import React from "react";
 import debounce from "lodash.debounce";
+import { Link } from "react-router-dom";
+import { FiArrowLeft } from "react-icons/fi";
 
 export function Brands() {
   const [search, setSearch] = React.useState("");
@@ -38,6 +41,9 @@ export function Brands() {
 
   return (
     <Box>
+      <IconButton as={Link} to="/" aria-label="Back" variant="outline">
+        <FiArrowLeft />
+      </IconButton>
       <Box
         as="h1"
         fontWeight={700}
