@@ -97,7 +97,7 @@ export function CampaignDetail() {
               as="img"
               width="100%"
               height="100%"
-              objectFit="cover"
+              objectFit="contain"
               src={
                 campaign.logo
                   ? `${config.APP_IMAGE_END_POINT}/campaigns/${campaign.logo}`

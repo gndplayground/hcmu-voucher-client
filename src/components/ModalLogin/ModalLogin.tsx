@@ -39,6 +39,7 @@ export function ModalLogin(props: ModalLoginProps) {
   const authLogin = useAuthLogin();
 
   const {
+    reset,
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
@@ -47,10 +48,17 @@ export function ModalLogin(props: ModalLoginProps) {
   });
 
   function onSubmit(values: FormLoginValues) {
-    authLogin.mutate({
-      email: values.email,
-      password: values.password,
-    });
+    authLogin.mutate(
+      {
+        email: values.email,
+        password: values.password,
+      },
+      {
+        onSuccess: () => {
+          reset();
+        },
+      }
+    );
   }
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
